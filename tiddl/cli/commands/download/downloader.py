@@ -145,7 +145,9 @@ class Downloader:
             if isinstance(item, Track):
                 try:
                     stream = self.api.get_track_stream(
-                        track_id=item.id, quality=self.track_quality
+                        track_id=item.id,
+                        quality=self.track_quality,
+                        immersive=self.dolby_atmos_filter != "none",
                     )
 
                     log.debug(
