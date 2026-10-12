@@ -222,12 +222,17 @@ class TidalAPI:
             expire_after=3600,
         )
 
-    def get_track_stream(self, track_id: ID, quality: TrackQuality):
+    def get_track_stream(
+        self, track_id: ID, quality: TrackQuality, immersive: bool = True
+    ):
         return self.client.fetch(
             TrackStream,
             f"tracks/{track_id}/playbackinfopostpaywall",
             {
                 "audioquality": quality,
+                # without immersiveaudio=false Tidal returns the Dolby Atmos stream
+                # for tracks that have one, even when stereo is wanted
+                "immersiveaudio": "true" if immersive else "false",
                 "playbackmode": "STREAM",
                 "assetpresentation": "FULL",
             },
