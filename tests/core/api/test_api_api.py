@@ -181,7 +181,27 @@ def test_get_track_stream(api: TidalAPI, mock_client: MockType):
     mock_client.fetch.assert_called_once_with(
         TrackStream,
         "tracks/1/playbackinfopostpaywall",
-        {"audioquality": "HIGH", "playbackmode": "STREAM", "assetpresentation": "FULL"},
+        {
+            "audioquality": "HIGH",
+            "immersiveaudio": "true",
+            "playbackmode": "STREAM",
+            "assetpresentation": "FULL",
+        },
+        expire_after=DO_NOT_CACHE,
+    )
+
+
+def test_get_track_stream_stereo(api: TidalAPI, mock_client: MockType):
+    api.get_track_stream(1, "HIGH", immersive=False)
+    mock_client.fetch.assert_called_once_with(
+        TrackStream,
+        "tracks/1/playbackinfopostpaywall",
+        {
+            "audioquality": "HIGH",
+            "immersiveaudio": "false",
+            "playbackmode": "STREAM",
+            "assetpresentation": "FULL",
+        },
         expire_after=DO_NOT_CACHE,
     )
 
